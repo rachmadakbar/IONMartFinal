@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">IONMart</string>
+    <string name="hello_world">Hello world!</string>
+    <string name="menu_settings">Settings</string>
+    <string name="title_activity_product_detail">ProductDetailActivity</string>
+    <string name="hello">Hello World, array3!</string>
+    <string name="title_activity_store_manager_home">StoreManagerHomeActivity</string>
+    <string name="title_activity_customer_manager">CustomerManagerActivity</string>
+    <string name="home">Home</string>
+    <string name="product">Product</string>
+    <string name="customer">Customer</string>
+    <string name="customer_title">Customer</string>
+    <string name="name">Full Name</string>
+    <string name="username">Username</string>
+    <string name="password">Password</string>
+    <string name="address">Address</string>
+    <string name="phone">Phone Number</string>
+    <string name="email">Email Address</string>
+    <string name="city">City</string>
+    <string name="sex">Sex</string>
+    <string name="sexMale">Male</string>
+    <string name="sexFemale">Female</string>
+    <string name="register">Register</string>
+
+    <string-array name="bank_arrays">
+        <item>BNI</item>
+        <item>BCA</item>
+        <item>Mandiri</item>
+        <item>BII</item>
+        <item>Danamon</item>
+    </string-array>
+
+    <string name="addProductToSchedule">Add Prdouct</string>
+    <string name="schedule_type_prompt">Select type</string>
+    <string name="bank_prompt">Select a Bank</string>
+
+    <string-array name="schedule_type_arrays">
+        <item>Once</item>
+        <item>Daily</item>
+        <item>Weekly</item>
+        <item>Monthly</item>
+        <item>Annually</item>
+    </string-array>
+
+    <string name="title_activity_add_product">AddProductActivity</string>
+
+</resources>

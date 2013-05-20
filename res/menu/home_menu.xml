@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android" >
+    <item android:id="@+id/topup" android:title="Top Up" android:enabled="true"></item>
+    <item android:id="@+id/logout" android:title="Log Out" android:enabled="true"></item>
+    <item android:id="@+id/checkout" android:title="Check Out" android:enabled="true"></item>
+    <item android:id="@+id/schedule" android:title="Schedule" android:enabled="true"></item>
+    <item android:id="@+id/history" android:title="History" android:enabled="true"></item>
+    
+
+</menu>
