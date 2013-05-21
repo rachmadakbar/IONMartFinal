@@ -1,31 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
 	android:layout_width="fill_parent"
 	android:layout_height="wrap_content"
 	android:orientation="vertical"
 	android:padding="4px"
-	android:scrollingCache="false"
-	android:background="#E5E5E5"
 	>
-	
-		
-		<TextView android:id="@+id/NameScheduleView" android:layout_width="fill_parent"
-		android:layout_height="26dip" android:singleLine="true"
-		android:textSize="20dip" android:textColor="#000" android:text="Id..." />
 
-	<TextView android:id="@+id/typeScheduleView" android:layout_width="fill_parent"
+	<TextView android:id="@+id/rowId" android:layout_width="fill_parent"
+		android:layout_height="26dip" android:singleLine="true"
+		android:textSize="20dip" android:text="Id..." />
+
+	<TextView android:id="@+id/rowType" android:layout_width="fill_parent"
 		android:text="Descr..." android:layout_height="20dip"
-		android:textSize="12dip" android:layout_below="@+id/NameScheduleView"
-		android:textColor="#000" />
+		android:textSize="12dip" android:layout_below="@+id/rowId"
+		 />
 
 	<TextView
-	    android:id="@+id/startScheduleView"
+	    android:id="@+id/rowDate"
 	    android:layout_width="match_parent"
 	    android:layout_height="wrap_content"
-	    android:layout_alignLeft="@+id/rowDesc"
+	    android:layout_alignLeft="@+id/rowType"
 	    android:layout_alignParentRight="true"
-	    android:layout_below="@+id/typeScheduleView"
+	    android:layout_below="@+id/rowRowType"
 	    android:text="Date"
 	    android:textAppearance="?android:attr/textAppearanceSmall"
 	    android:textSize="12dip" />
-			
 </LinearLayout>

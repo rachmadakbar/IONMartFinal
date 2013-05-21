@@ -37,7 +37,6 @@
     <string name="bank_prompt">Select a Bank</string>
 
     <string-array name="schedule_type_arrays">
-        <item>Once</item>
         <item>Daily</item>
         <item>Weekly</item>
         <item>Monthly</item>
@@ -45,5 +44,6 @@
     </string-array>
 
     <string name="title_activity_add_product">AddProductActivity</string>
+    <string name="title_activity_schedule_form">ScheduleFormActivity</string>
 
 </resources>

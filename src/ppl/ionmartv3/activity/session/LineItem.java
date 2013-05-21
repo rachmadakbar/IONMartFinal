@@ -10,6 +10,10 @@ public class LineItem {
         this.quantity = quantity;
     }
     
+    public void updateQuantity(int number){
+    	this.quantity += number;
+    }
+    
     public void setQuantity(int number){
         this.quantity = number;
     }

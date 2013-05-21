@@ -12,132 +12,170 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.view.LayoutInflater;
 import android.widget.AdapterView;
 import android.widget.AdapterView.AdapterContextMenuInfo;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
+
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import ppl.ionmartv3.R;
-import ppl.ionmartv3.activity.adapter.IONMartDBAdapter;
 import ppl.ionmartv3.activity.session.LineItem;
 
+public class ListProductInScheduleActivity extends Activity {
 
-public class ListProductInScheduleActivity extends Activity  {
-	
 	List<LineItem> model = new ArrayList<LineItem>();
 	static LineItemAdapter adapter = null;
 	LineItem clicked = null;
 	static TextView total = null;
 	Context context = this;
-	static IONMartDBAdapter db;
+	boolean paid = false;
+
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.activity_list_product_in_schedule);
-		//ListProductInScheduleActivity.this.requestWindowFeature(Window.FEATURE_NO_TITLE);
+		if (ScheduleActivity.edited.getPaid()) {
+			setContentView(R.layout.activity_list_product_paid_schedule);
+			paid = true;
+		} else {
+			setContentView(R.layout.activity_list_product_in_schedule);
+			Button addProductButton = (Button) findViewById(R.id.addProductToSchedule);
+			addProductButton.setOnClickListener(addProduct);
+			Button checkOutButton = (Button) findViewById(R.id.checkOutSchedule);
+			checkOutButton.setOnClickListener(checkOut);
+		}
+		// ListProductInScheduleActivity.this.requestWindowFeature(Window.FEATURE_NO_TITLE);
 		ListView list = (ListView) findViewById(R.id.listProductInSchedule);
 		total = (TextView) findViewById(R.id.totalSchedulePrice);
 		adapter = new LineItemAdapter();
 		list.setAdapter(adapter);
 		registerForContextMenu(list);
-		db = CustomerHomeActivity.db;
 		getAllLineItem();
-		if(adapter.getCount()>0)total.setText("Total Price : "+ScheduleActivity.edited.getTotalPrice());
-		//Toast.makeText(ListProductInScheduleActivity.this.getApplicationContext(), ""+ScheduleActivity.edited.getName(), Toast.LENGTH_LONG).show();
+		if (adapter.getCount() > 0)
+			total.setText("Total Price : "
+					+ ScheduleActivity.edited.getTotalPrice());
+		// Toast.makeText(ListProductInScheduleActivity.this.getApplicationContext(),
+		// ""+ScheduleActivity.edited.getName(), Toast.LENGTH_LONG).show();
 		list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 
 			@Override
 			public void onItemClick(AdapterView<?> arg0, View arg1, int arg2,
 					long arg3) {
 				// TODO Auto-generated method stub
-				LayoutInflater li = LayoutInflater.from(context);
-				View promptsView = li.inflate(R.layout.prompt_edit_quantity, null);
+				if (!paid) {
+					LayoutInflater li = LayoutInflater.from(context);
+					View promptsView = li.inflate(
+							R.layout.prompt_edit_quantity, null);
 
-				AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(context);
+					AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(
+							context);
 
-				// set prompts.xml to alertdialog builder
-				alertDialogBuilder.setView(promptsView);
+					// set prompts.xml to alertdialog builder
+					alertDialogBuilder.setView(promptsView);
 
-				final EditText userInput = (EditText) promptsView
-						.findViewById(R.id.editTextDialogUser2);
+					final EditText userInput = (EditText) promptsView
+							.findViewById(R.id.editTextDialogUser2);
 
-				// set dialog message
-				alertDialogBuilder
-					.setCancelable(false)
-					.setPositiveButton("OK",
-					  new DialogInterface.OnClickListener() {
-					    @Override
-						public void onClick(DialogInterface dialog,int id) {
-					    	int quantity = Integer.parseInt(userInput.getText().toString());
-					    	clicked.setQuantity(quantity);
-					    	db.open();
-					    	db.editKuantitas(ScheduleActivity.edited.getId(), clicked.getIdProduct(), quantity);
-							total.setText("Total Price : "+ScheduleActivity.edited.getTotalPrice());
-							db.close();
-					    	adapter.notifyDataSetChanged();
-					    }
-					  })
-					.setNegativeButton("Cancel",
-					  new DialogInterface.OnClickListener() {
-					    @Override
-						public void onClick(DialogInterface dialog,int id) {
-						dialog.cancel();
-					    }
-					  });
+					// set dialog message
+					alertDialogBuilder
+							.setCancelable(false)
+							.setPositiveButton("OK",
+									new DialogInterface.OnClickListener() {
+										@Override
+										public void onClick(
+												DialogInterface dialog, int id) {
+											int quantity = Integer
+													.parseInt(userInput
+															.getText()
+															.toString());
+											clicked.setQuantity(quantity);
+											/*
+											 * <--------ini belum--------> cek
+											 * kuantitasnya dulu
+											 */
+											ScheduleActivity.edited
+													.setQuantity(clicked,
+															quantity);
+											total.setText("Total Price : "
+													+ ScheduleActivity.edited
+															.getTotalPrice());
+											adapter.notifyDataSetChanged();
+										}
+									})
+							.setNegativeButton("Cancel",
+									new DialogInterface.OnClickListener() {
+										@Override
+										public void onClick(
+												DialogInterface dialog, int id) {
+											dialog.cancel();
+										}
+									});
 
-				// create alert dialog
-				AlertDialog alertDialog = alertDialogBuilder.create();
+					// create alert dialog
+					AlertDialog alertDialog = alertDialogBuilder.create();
 
-				// show it
-				alertDialog.show();
+					// show it
+					alertDialog.show();
+				}
 			}
 		});
 	}
-	
-	private void getAllLineItem(){
-		ArrayList<LineItem> list = ScheduleActivity.edited.getAllLineItem();
-		for(int i = 0; i < list.size();i++){
-			adapter.add(list.get(i));
+
+	private View.OnClickListener addProduct = new View.OnClickListener() {
+
+		@Override
+		public void onClick(View arg0) {
+			// TODO Auto-generated method stub
+			Intent intent = new Intent(getApplicationContext(), AddProductActivity.class);
+			intent.putExtra("mode", "addtoschedule");
+			startActivity(intent);
+
+		}
+	};
+
+	private View.OnClickListener checkOut = new View.OnClickListener() {
+
+		@Override
+		public void onClick(View arg0) {
+			// TODO Auto-generated method stub
+			if(ScheduleActivity.edited.getTotalSchedulePrice()<= CustomerHomeActivity.customer.getMoney()){
+				// eksekusi checkout
+				ScheduleFormActivity.getInstance().finish();
+				Intent xintent = new Intent(getApplicationContext(),ScheduleActivity.class); 
+				startActivity(xintent);
+				finish();
+			}else{
+				Toast.makeText(ListProductInScheduleActivity.this.getApplicationContext(), "Not enough money", Toast.LENGTH_LONG).show();
+			}
+		}
+	};
+
+	private void getAllLineItem() {
+		HashMap<String, LineItem> map = ScheduleActivity.edited
+				.getAllLineItem();
+		for (Map.Entry<String, LineItem> entry : map.entrySet()) {
+			adapter.add(entry.getValue());
 		}
 	}
-	public static void insertLineItem(LineItem line){
-		db.open();
-		if(!db.isExist(line.getIdProduct(), ScheduleActivity.edited.getId())){
-			ScheduleActivity.edited.addLineItem(line);
+
+	public static void insertLineItem(LineItem line) {
+		if (!ScheduleActivity.edited.isAlreadyExist(line.getIdProduct())) {
 			adapter.add(line);
 		}
-		db.insertProductTerkaitPembelian(line.getIdProduct(), ScheduleActivity.edited.getId(), line.getQuantity());
-		db.insertProduk(line.getIdProduct());
-		total.setText("Total Price : "+ScheduleActivity.edited.getTotalPrice());
-		db.close();
-	}
-	
-	@Override
-	public boolean onCreateOptionsMenu(Menu menu) {
-		MenuInflater inflater = getMenuInflater();
-		inflater.inflate(R.menu.activity_list_product_in_schedule, menu);
-		return true;
-	}
-
-	@Override
-	public boolean onOptionsItemSelected(MenuItem item) {
-		switch (item.getItemId()) {
-		case R.id.AddToSchedule:
-			Intent intent = new Intent(this, AddProductActivity.class);
-			intent.putExtra("mode", "addtoschedule");
-			this.startActivity(intent);
-			return true;
-
-		default:
-			return super.onOptionsItemSelected(item);
-		}
+		ScheduleActivity.edited.addLineItem(line);
+		total.setText("Total Price : "
+				+ ScheduleActivity.edited.getTotalPrice());
 	}
 
 	@Override
@@ -154,13 +192,11 @@ public class ListProductInScheduleActivity extends Activity  {
 	public boolean onContextItemSelected(MenuItem item) {
 		if (item.getTitle() == "Remove") {
 			deleteLineItemFromSchedule();
-		}else {
+		} else {
 			return false;
 		}
 		return true;
 	}
-
-	
 
 	private void deleteLineItemFromSchedule() {
 		// TODO Auto-generated method stub
@@ -173,12 +209,11 @@ public class ListProductInScheduleActivity extends Activity  {
 						new DialogInterface.OnClickListener() {
 							@Override
 							public void onClick(DialogInterface dialog, int id) {
-								db.open();
-								db.deleteProductFromPembelian(clicked.getIdProduct(), ScheduleActivity.edited.getId());
 								adapter.remove(clicked);
 								ScheduleActivity.edited.deleteLineItem(clicked);
-								total.setText("Total Price : "+ScheduleActivity.edited.getTotalPrice());
-								db.close();
+								total.setText("Total Price : "
+										+ ScheduleActivity.edited
+												.getTotalPrice());
 							}
 						})
 				.setNegativeButton("No", new DialogInterface.OnClickListener() {
@@ -191,11 +226,11 @@ public class ListProductInScheduleActivity extends Activity  {
 		alertDialog.show();
 	}
 
-
 	class LineItemAdapter extends ArrayAdapter<LineItem> {
-		
+
 		LineItemAdapter() {
-			super(ListProductInScheduleActivity.this, R.layout.product_scheduled_row, model);
+			super(ListProductInScheduleActivity.this,
+					R.layout.product_scheduled_row, model);
 		}
 
 		@Override
@@ -205,7 +240,8 @@ public class ListProductInScheduleActivity extends Activity  {
 
 			if (row == null) {
 				LayoutInflater inflater = getLayoutInflater();
-				row = inflater.inflate(R.layout.product_scheduled_row, parent, false);
+				row = inflater.inflate(R.layout.product_scheduled_row, parent,
+						false);
 				holder = new ListLineItem(row);
 				row.setTag(holder);
 			} else {
@@ -216,7 +252,6 @@ public class ListProductInScheduleActivity extends Activity  {
 			return (row);
 		}
 
-		
 	}
 
 	static class ListLineItem {
@@ -225,14 +260,15 @@ public class ListProductInScheduleActivity extends Activity  {
 		private TextView quantity = null;
 		private TextView subTotal = null;
 		private ImageView icon = null;
-		
-				
+
 		ListLineItem(View row) {
-			
+
 			name = (TextView) row.findViewById(R.id.namaProductSchedule);
 			price = (TextView) row.findViewById(R.id.priceProductSchedule);
-			quantity = (TextView) row.findViewById(R.id.kuantitasProductSchedule);
-			subTotal = (TextView) row.findViewById(R.id.subTotalProductSchedule);
+			quantity = (TextView) row
+					.findViewById(R.id.kuantitasProductSchedule);
+			subTotal = (TextView) row
+					.findViewById(R.id.subTotalProductSchedule);
 			icon = (ImageView) row.findViewById(R.id.iconProductSchedule);
 		}
 
@@ -242,9 +278,9 @@ public class ListProductInScheduleActivity extends Activity  {
 			quantity.setText("Quantity : " + r.getQuantity());
 			subTotal.setText("subTotal : " + r.getSubTotal());
 			icon.setImageBitmap(r.getProduct().getImage());
-		
+
 		}
-		
+
 	}
 
 }

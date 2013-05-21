@@ -1,129 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="#E5E5E5" >
+<LinearLayout
+	xmlns:android="http://schemas.android.com/apk/res/android"
+	android:orientation="vertical"
+	android:layout_width="fill_parent" 
+	android:layout_height="fill_parent" >
 
-    <LinearLayout
-        android:id="@+id/linearLayout1"
-        android:layout_width="fill_parent"
-        android:layout_height="50dp"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentTop="true"
-        android:background="@drawable/bar"
-        android:orientation="horizontal" >
-
-        <LinearLayout
-            android:layout_width="75dp"
-            android:layout_height="31.5dp"
-            android:layout_margin="6.7dp"
-            android:background="@drawable/logo"
-            android:orientation="vertical" >
-        </LinearLayout>
-
-        <TextView
-            android:id="@+id/textView6"
-            android:layout_width="150dp"
-            android:layout_height="31.5dp"
-            android:layout_margin="10dp"
-            android:gravity="center"
-            android:text="Schedule"
-            android:textAppearance="?android:attr/textAppearanceLarge"
-            android:textColor="#FFFFFF" />
-    </LinearLayout>
-
-    <TabHost
-        android:id="@android:id/tabhost"
+    <Button
+        android:id="@+id/create_schedule"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_alignParentLeft="true"
-        android:layout_below="@+id/linearLayout1" >
+        android:layout_height="wrap_content"
+        android:text="Create Schedule" />
 
-        <LinearLayout
-            android:layout_width="fill_parent"
-            android:layout_height="fill_parent"
-            android:orientation="vertical" >
+	<ListView
+		android:id="@+id/list"
+		android:layout_width="fill_parent" 
+		android:layout_height="fill_parent"
+		android:drawSelectorOnTop="false"
+		/>
 
-            <TabWidget
-                android:id="@android:id/tabs"
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content" />
-
-            
-
-            <FrameLayout
-                android:id="@android:id/tabcontent"
-                android:layout_width="fill_parent"
-                android:layout_height="fill_parent" >
-
-                <ListView
-                    android:id="@+id/listSchedule"
-                    android:layout_width="fill_parent"
-                    android:layout_height="fill_parent" />
-
-                <ScrollView
-                    android:id="@+id/ScrollView02"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content" >
-                    
-                    <LinearLayout 
-                        android:layout_width="fill_parent"
-                        android:layout_height="wrap_content">
-
-                    <TableLayout
-                        android:id="@+id/detailSchedule"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginRight="10px"
-                        android:paddingTop="4px"
-                        android:stretchColumns="1" >
-
-                        <TableRow>
-
-                            <TextView android:text="Name:" />
-
-                            <EditText
-                                android:id="@+id/scheduleName"
-                                android:layout_weight="1" />
-                        </TableRow>
-
-                        <TableRow>
-
-                            <TextView
-                                android:id="@+id/typeSchedule"
-                                android:text="Type :" />
-
-                            <Spinner
-                                android:id="@+id/spinnerType"
-                                android:entries="@array/schedule_type_arrays"
-                                android:prompt="@string/schedule_type_prompt" />
-                        </TableRow>
-
-                        <TableRow>
-
-                            <TextView
-                                android:id="@+id/Startschedule"
-                                android:text="Delivery Date :" />
-
-                            <DatePicker
-                                android:id="@+id/dateStart"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:spinnersShown="false"
-                                android:calendarViewShown="true" />
-                        </TableRow>
-
-                        <Button
-                            android:id="@+id/saveSchedule"
-                            android:layout_width="fill_parent"
-                            android:layout_height="wrap_content"
-                            android:text="Save" />
-                    </TableLayout>
-                    </LinearLayout>
-                </ScrollView>
-            </FrameLayout>
-        </LinearLayout>
-    </TabHost>
-
-</RelativeLayout>
+</LinearLayout>

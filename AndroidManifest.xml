@@ -75,10 +75,13 @@
             android:name="ppl.ionmartv3.activity.AddProductActivity"
             android:label="@string/title_activity_add_product" >
         </activity>
-        
-         <activity
+        <activity
             android:name="ppl.ionmartv3.activity.ListProductInScheduleActivity"
             android:label="@string/title_activity_add_product" >
+        </activity>
+        <activity
+            android:name="ppl.ionmartv3.activity.ScheduleFormActivity"
+            android:label="@string/title_activity_schedule_form" >
         </activity>
     </application>
 

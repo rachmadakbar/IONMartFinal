@@ -35,30 +35,11 @@
             android:textColor="#FFFFFF" />
         </LinearLayout>
 
-	<TableRow
-	    android:id="@+id/tableRow1"
-	    android:layout_width="match_parent"
-	    android:layout_height="wrap_content" >
-
-		<Button
-		    android:id="@+id/addProductToSchedule"
-		    android:layout_width="152dp"
-		    android:layout_height="wrap_content"
-		    android:text="Add Product" />
-
-		<Button
-		    android:id="@+id/checkOutSchedule"
-		    android:layout_width="162dp"
-		    android:layout_height="wrap_content"
-		    android:text="Check Out" />
-
-	</TableRow>
-
 	 <TextView
         android:id="@+id/totalSchedulePrice"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Add your Product"
+        android:text="Total Prices : "
         android:textAppearance="?android:attr/textAppearanceLarge" />
 
 	<ListView

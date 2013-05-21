@@ -1,0 +1,80 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".ScheduleFormActivity" >
+
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:orientation="vertical" >
+
+        <TableLayout
+            android:id="@+id/detailSchedule"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingTop="4px"
+            android:stretchColumns="1" >
+
+            <TableRow>
+
+                <TextView android:text="Name:" />
+
+                <EditText
+                    android:id="@+id/scheduleName"
+                    android:layout_weight="1" />
+            </TableRow>
+
+            <TableRow>
+
+                <TextView
+                    android:id="@+id/typeSchedule"
+                    android:text="Type :" />
+
+                <Spinner
+                    android:id="@+id/spinnerType"
+                    android:entries="@array/schedule_type_arrays"
+                    android:prompt="@string/schedule_type_prompt" />
+            </TableRow>
+
+            <TableRow>
+
+                <TextView
+                    android:id="@+id/Startschedule"
+                    android:text="Delivery Date :" />
+            </TableRow>
+
+            <DatePicker
+                android:id="@+id/datePickerSchedule"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+
+            <TableRow>
+
+                <TextView
+                    android:id="@+id/repeat"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Repeat : " />
+
+                <EditText
+                    android:id="@+id/repeated"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:ems="10"
+                    android:inputType="number" >
+
+                    <requestFocus />
+                </EditText>
+                
+            </TableRow>
+
+            <Button
+                android:id="@+id/saveSchedule"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:text="Save" />
+        </TableLayout>
+    </LinearLayout>
+
+</RelativeLayout>
