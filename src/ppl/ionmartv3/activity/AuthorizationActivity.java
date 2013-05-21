@@ -44,11 +44,11 @@ public class AuthorizationActivity extends Activity {
 		db = new IONMartDBAdapter(this);
 		db.open();
 		//db.dropDatabase();
-		Cursor c = db.getActiveUser();
+		Cursor c = db.getActiveSession();
 		
 		if(c.moveToFirst()){
 			Intent intent = null;
-			if(c.getString(7).equalsIgnoreCase("C")){
+			if(c.getString(1).equalsIgnoreCase("C")){
 				intent = new Intent(AuthorizationActivity.this.getApplicationContext(), CustomerHomeActivity.class);
 			}else intent = new Intent(AuthorizationActivity.this.getApplicationContext(), StoreManagerHomeActivity.class);
 			db.close();
@@ -95,27 +95,30 @@ public class AuthorizationActivity extends Activity {
 					{
 						try {
 							db.open();
-							Cursor c = db.getUser(o.getString("username"));
 							Intent intent = null;
 			            	String role = o.getString("role");
-							if(c.moveToFirst()){
-								db.updateAkun(o.getString("username"), o.getString("password"), Double.parseDouble(o.getString("saldo")));
-								db.loggedIn(o.getString("username"));
-							}else{
-								if(role.contains("C"))
-									db.insertAkun(o.getString("username"), o.getString("password"), o.getString("alamat"), "", "","", true, "C", Double.parseDouble(o.getString("saldo")));
-								else
-									db.insertAkun(o.getString("username"), o.getString("password"),  o.getString("alamat"), "", "","", true, "M", Double.parseDouble(o.getString("saldo")));
-							}
-							db.close();
-			            	if(role.contains("C"))
+			            	db.insertAkun(o.getString("username"), o.getString("password"), o.getString("alamat"), "", Double.parseDouble(o.getString("saldo")));
+							if(role.contains("C"))
+								db.insertRole(o.getString("username"), "C");
+							if(role.contains("M"))
+								db.insertRole(o.getString("username"), "M");
+							int count = db.getRoleCount(o.getString("username"));
+							
+			            	if(count==2)
 							{
-			            		intent = new Intent(AuthorizationActivity.this.getApplicationContext(), CustomerHomeActivity.class);
+			            		//intent = new Intent(AuthorizationActivity.this.getApplicationContext(), CustomerHomeActivity.class);
 							}
-			            	else if(role.contains("M"))
+			            	else if(role.contains("C"))
 			            	{
+			            		db.login(o.getString("username"), "C");
+			            		db.close();
 			            		intent = new Intent(AuthorizationActivity.this.getApplicationContext(), StoreManagerHomeActivity.class);
+			            	}else {
+			            		db.login(o.getString("username"), "M");
+			            		db.close();
+			            		intent = new Intent(AuthorizationActivity.this.getApplicationContext(), CustomerHomeActivity.class);
 			            	}
+							
 							AuthorizationActivity.this.startActivity(intent);
 							finish();
 						} catch (JSONException e) {
@@ -127,8 +130,5 @@ public class AuthorizationActivity extends Activity {
 				}
 			}
 		});
-		
-		
-		
 	}
 }

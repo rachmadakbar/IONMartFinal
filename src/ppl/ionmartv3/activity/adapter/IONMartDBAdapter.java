@@ -148,6 +148,11 @@ public class IONMartDBAdapter {
 		return db.rawQuery(MY_QUERY, new String[] { String.valueOf("1") });
 	}
 	
+	public Cursor getUser(String username) {
+		final String MY_QUERY = "SELECT * FROM AKUN where username=?";
+		return db.rawQuery(MY_QUERY, new String[] { String.valueOf(username) });
+	}
+	
 	public double getSaldo(String username){
 		final String MY_QUERY = "SELECT saldo FROM AKUN where username=?";
 		Cursor c = db.rawQuery(MY_QUERY, new String[] { String.valueOf(username) });
@@ -180,5 +185,19 @@ public class IONMartDBAdapter {
 	public boolean clearShoppingCart(String username) 
 	{
 	    return db.delete(DATABASE_TABLE3, "username='" + username+"'", null) > 0;
+	}
+	
+	public int getRoleCount(String username){
+		final String MY_QUERY = "SELECT count(*) FROM ROLE_SESSION where username=?";
+		Cursor c =  db.rawQuery(MY_QUERY, new String[] { String.valueOf(username) });
+		c.moveToFirst();
+		return Integer.parseInt(c.getString(0));		
+	}
+	
+	public String getPassword(String username){
+		final String MY_QUERY = "SELECT password FROM AKUN where username=?";
+		Cursor c =  db.rawQuery(MY_QUERY, new String[] { String.valueOf(username) });
+		c.moveToFirst();
+		return c.getString(0);
 	}
 }

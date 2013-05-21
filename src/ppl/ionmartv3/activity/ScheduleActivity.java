@@ -40,8 +40,6 @@ import ppl.ionmartv3.activity.session.LineItem;
 import ppl.ionmartv3.activity.session.Product;
 import ppl.ionmartv3.activity.session.Schedule;
 
-
-
 public class ScheduleActivity extends TabActivity implements
 		View.OnClickListener {
 	List<Schedule> model = new ArrayList<Schedule>();
@@ -121,6 +119,7 @@ public class ScheduleActivity extends TabActivity implements
         this.startActivity(intent);
 	}
 	public void getAllSchedule(){
+		/* ini get semua schedulnya dari server
 		db.open();
 		Cursor c = db.getAllSchedule(customer.getUsername());
 		//Toast.makeText(ScheduleActivity.this.getApplicationContext(), ""+c.getCount(), Toast.LENGTH_LONG).show();
@@ -140,17 +139,8 @@ public class ScheduleActivity extends TabActivity implements
 				}
 				adapter.add(s);			
 		}
-		db.close();
-	}
-	@Override
-	public void onCreateContextMenu(ContextMenu menu, View v,
-			ContextMenuInfo menuInfo) {
-		super.onCreateContextMenu(menu, v, menuInfo);
-		AdapterContextMenuInfo aInfo = (AdapterContextMenuInfo) menuInfo;
-		edited = adapter.getItem(aInfo.position);
-		menu.setHeaderTitle(edited.getName());
-		menu.add(0, v.getId(), 0, "Edit");
-		menu.add(0, v.getId(), 0, "Delete");
+		db.close();*/
+		
 	}
 
 	@Override
@@ -208,10 +198,7 @@ public class ScheduleActivity extends TabActivity implements
 						new DialogInterface.OnClickListener() {
 							@Override
 							public void onClick(DialogInterface dialog, int id) {
-								//Log.e(customer.getUsername(),edited.getName());
-								db.open();
-								db.deleteSchedule(customer.getUsername(),edited.getName());
-								db.close();
+								//<------- ini hapus --------->
 								adapter.remove(edited);
 								
 							}

@@ -41,11 +41,15 @@ public class CustomerHomeActivity extends FragmentActivity {
 		super.onCreate(savedInstanceState);
 		db = new IONMartDBAdapter(this);
 		db.open();
-		Cursor c  = db.getActiveUser();
+		Cursor c = db.getActiveSession();
+		c.moveToFirst();
+		String username = c.getString(0); 
+		c  = db.getUser(username);
 		c.moveToFirst();
 		customer = new Customer(c.getString(0), c.getString(1));
-		customer.setMoney(Long.parseLong(c.getString(8)));
 		customer.setAddress(c.getString(2));
+		customer.setCity(c.getString(3));
+		customer.setMoney(Long.parseLong(c.getString(4)));
 		db.close();
 		this.requestWindowFeature(Window.FEATURE_NO_TITLE);
 		this.getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
@@ -110,7 +114,7 @@ public class CustomerHomeActivity extends FragmentActivity {
 				public void onClick(DialogInterface dialog,int id) 
 	            {
 	            	db.open();
-	    			db.loggedOut(customer.getUsername());
+	    			db.logout(customer.getUsername(),"C");
 	    			Intent xintent = new Intent(getApplicationContext(), AuthorizationActivity.class);
 	    			startActivity(xintent);
 	    			finish();

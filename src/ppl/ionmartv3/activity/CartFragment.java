@@ -111,10 +111,7 @@ public class CartFragment extends Fragment {
 								Toast.makeText(CartFragment.this.getActivity(), "Item is not available for that amount", Toast.LENGTH_LONG).show();
 							} else {
 								db.open();
-								int idShoppingCart = db.getShoppingCartID(customer
-										.getUsername());
-								db.editKuantitas(idShoppingCart, l.getIdProduct(),
-										amount);
+								db.insertToShoppingCart(l.getIdProduct(), customer.getUsername(), amount);
 								l.setQuantity(amount);
 								adapterCart.notifyDataSetChanged();
 								db.close();
@@ -149,10 +146,7 @@ public class CartFragment extends Fragment {
 							Customer customer = CustomerHomeActivity.customer;
 							LineItem l = CustomerHomeActivity.mShoppingCart
 									.get(info.position);
-							int idShoppingCart = db.getShoppingCartID(customer
-									.getUsername());
-							db.deleteProductFromPembelian(l.getIdProduct(),
-									idShoppingCart);
+							db.deleteProduct(l.getIdProduct(),customer.getUsername());
 							Log.e("before",
 									CustomerHomeActivity.mShoppingCart.size()
 											+ "");

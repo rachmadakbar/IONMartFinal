@@ -227,9 +227,9 @@ public class StockManagerActivity extends TabActivity implements
 				public void onClick(DialogInterface dialog,int id) 
 	            {
 	            	db.open();
-	            	Cursor c = db.getActiveUser();
+	            	Cursor c = db.getActiveSession();
 	            	c.moveToFirst();
-	            	db.loggedOut(c.getString(0));
+	            	db.logout(c.getString(0), "M");
 	            	db.close();
 	            	Intent intent3 = new Intent(getApplicationContext(), AuthorizationActivity.class);
 	                startActivity(intent3);

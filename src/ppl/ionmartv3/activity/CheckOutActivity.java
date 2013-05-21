@@ -111,7 +111,6 @@ public class CheckOutActivity extends Activity implements View.OnClickListener {
 	private void checkOut() {
 		db.open();
 		double total = CustomerHomeActivity.getTotal();
-		db.insertHistory(customer.getUsername(), (new Date()).toString(), total);
 		// <-------ini belum------>
 		int hargatotal = 0;
 		for (LineItem line : CustomerHomeActivity.mShoppingCart) {
@@ -147,11 +146,7 @@ public class CheckOutActivity extends Activity implements View.OnClickListener {
 						String password = userInput.getText().toString();
 						boolean match = false;
 						db.open();
-						Cursor c = db.getUser(customer.getUsername());
-						if (c.moveToFirst()) {
-							if (c.getString(1).equals(password))
-								match = true;
-						}
+						if (db.getPassword(customer.getUsername()).equals(password))match = true;
 						db.close();
 						if (match) {
 							checkOut();

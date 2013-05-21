@@ -22,16 +22,14 @@ public class HistoryActivity extends Activity {
 	IONMartDBAdapter db;
 	@Override	
 	protected void onCreate(Bundle savedInstanceState) {
-		db = CustomerHomeActivity.db;
 		customer = CustomerHomeActivity.customer;
 		super.onCreate(savedInstanceState);
 		this.requestWindowFeature(Window.FEATURE_NO_TITLE);
 		setContentView(R.layout.activity_history);
-		db.open();
-		Cursor c = db.getHistoryPembelian(customer.getUsername());
 		TableLayout tableview = (TableLayout) findViewById(R.id.tableview);
 	    tableview.setPadding(0, 0, 0, 0);
 	    
+	    /*<---- ini ambil dari server -->
 	    while(c.moveToNext()){
 	            TableRow row = new TableRow(this);
 	            TableRow row2 = new TableRow(this);
@@ -76,8 +74,7 @@ public class HistoryActivity extends Activity {
 	            tableview.addView(row);
 	            tableview.addView(row3);
 	            
-	    }
-	    db.close();
+	    }*/
 	}
 
 	@Override

@@ -112,7 +112,7 @@ public class DetailProductActivity extends Activity {
 						  String username = CustomerHomeActivity.customer.getUsername();
 						  CustomerHomeActivity.db.open();
 						  CustomerHomeActivity.db.insertProduk(recentProduct.id);
-						  CustomerHomeActivity.db.addProductToShoppingCart(username, recentProduct.id, amount);
+						  CustomerHomeActivity.db.insertToShoppingCart(recentProduct.id, username, amount);
 						  CustomerHomeActivity.db.close();
 						  CustomerHomeActivity.getShoppingcart();
 						  
