@@ -83,6 +83,10 @@
             android:name="ppl.ionmartv3.activity.ScheduleFormActivity"
             android:label="@string/title_activity_schedule_form" >
         </activity>
+        <activity
+            android:name="ppl.ionmartv3.activity.FavoriteProductActivity"
+            android:label="@string/title_activity_favorite_product" >
+        </activity>
     </application>
 
 </manifest>

@@ -45,6 +45,8 @@ public class ListProductInScheduleActivity extends Activity {
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+		//LineItem l =new LineItem(new Product("productId", "productName", 100, 1,adapter), 50); 
+		//ScheduleActivity.edited.addLineItem(l);
 		if (ScheduleActivity.edited.getPaid()) {
 			setContentView(R.layout.activity_list_product_paid_schedule);
 			paid = true;
@@ -73,6 +75,7 @@ public class ListProductInScheduleActivity extends Activity {
 			public void onItemClick(AdapterView<?> arg0, View arg1, int arg2,
 					long arg3) {
 				// TODO Auto-generated method stub
+				clicked = adapter.getItem(arg2);
 				if (!paid) {
 					LayoutInflater li = LayoutInflater.from(context);
 					View promptsView = li.inflate(
@@ -99,17 +102,13 @@ public class ListProductInScheduleActivity extends Activity {
 													.parseInt(userInput
 															.getText()
 															.toString());
-											clicked.setQuantity(quantity);
+											ScheduleActivity.edited.setQuantity(clicked, quantity);
 											/*
 											 * <--------ini belum--------> cek
 											 * kuantitasnya dulu
 											 */
-											ScheduleActivity.edited
-													.setQuantity(clicked,
-															quantity);
-											total.setText("Total Price : "
-													+ ScheduleActivity.edited
-															.getTotalPrice());
+											
+											total.setText("Total Price : "+ ScheduleActivity.edited.getTotalPrice());
 											adapter.notifyDataSetChanged();
 										}
 									})
@@ -137,9 +136,9 @@ public class ListProductInScheduleActivity extends Activity {
 		@Override
 		public void onClick(View arg0) {
 			// TODO Auto-generated method stub
-			Intent intent = new Intent(getApplicationContext(), AddProductActivity.class);
-			intent.putExtra("mode", "addtoschedule");
-			startActivity(intent);
+			// Intent intent = new Intent(this, AddProductActivity.class);
+			// intent.putExtra("mode", "addtoschedule");
+			// this.startActivity(intent);
 
 		}
 	};
@@ -149,14 +148,18 @@ public class ListProductInScheduleActivity extends Activity {
 		@Override
 		public void onClick(View arg0) {
 			// TODO Auto-generated method stub
-			if(ScheduleActivity.edited.getTotalSchedulePrice()<= CustomerHomeActivity.customer.getMoney()){
+			if (ScheduleActivity.edited.getTotalSchedulePrice() <= 0) {
 				// eksekusi checkout
 				ScheduleFormActivity.getInstance().finish();
-				Intent xintent = new Intent(getApplicationContext(),ScheduleActivity.class); 
+				Intent xintent = new Intent(getApplicationContext(),
+						ScheduleActivity.class);
 				startActivity(xintent);
 				finish();
-			}else{
-				Toast.makeText(ListProductInScheduleActivity.this.getApplicationContext(), "Not enough money", Toast.LENGTH_LONG).show();
+			} else {
+				Toast.makeText(
+						ListProductInScheduleActivity.this
+								.getApplicationContext(),
+						"Not enough money", Toast.LENGTH_LONG).show();
 			}
 		}
 	};
@@ -181,11 +184,13 @@ public class ListProductInScheduleActivity extends Activity {
 	@Override
 	public void onCreateContextMenu(ContextMenu menu, View v,
 			ContextMenuInfo menuInfo) {
-		super.onCreateContextMenu(menu, v, menuInfo);
-		AdapterContextMenuInfo aInfo = (AdapterContextMenuInfo) menuInfo;
-		clicked = adapter.getItem(aInfo.position);
-		menu.setHeaderTitle(clicked.getProductName());
-		menu.add(0, v.getId(), 0, "Remove");
+		if (!paid) {
+			super.onCreateContextMenu(menu, v, menuInfo);
+			AdapterContextMenuInfo aInfo = (AdapterContextMenuInfo) menuInfo;
+			clicked = adapter.getItem(aInfo.position);
+			menu.setHeaderTitle(clicked.getProductName());
+			menu.add(0, v.getId(), 0, "Remove");
+		}
 	}
 
 	@Override
