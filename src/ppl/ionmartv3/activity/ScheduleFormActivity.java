@@ -7,6 +7,8 @@ import ppl.ionmartv3.activity.session.Schedule;
 
 import android.os.Bundle;
 import android.app.Activity;
+import android.app.DatePickerDialog;
+import android.app.Dialog;
 import android.content.Intent;
 import android.database.Cursor;
 import android.view.Menu;
@@ -15,6 +17,7 @@ import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.Spinner;
+import android.widget.TextView;
 import android.widget.Toast;
 
 public class ScheduleFormActivity extends Activity {
@@ -23,7 +26,14 @@ public class ScheduleFormActivity extends Activity {
 	EditText repeated = null;
 	Spinner type = null;
 	Button save;
-	DatePicker date;
+	private int mYear;
+	private int mMonth;
+	private int mDay;
+
+	private TextView mDateDisplay;
+	private Button mPickDate;
+
+	static final int DATE_DIALOG_ID = 0;
 	static ScheduleFormActivity scheduleForm;
 
 	@Override
@@ -34,9 +44,52 @@ public class ScheduleFormActivity extends Activity {
 		name = (EditText) findViewById(R.id.scheduleName);
 		type = (Spinner) findViewById(R.id.spinnerType);
 		repeated = (EditText) findViewById(R.id.repeated);
-		date = (DatePicker) findViewById(R.id.datePickerSchedule);
 		save = (Button) findViewById(R.id.saveSchedule);
 		save.setOnClickListener(createSchedule);
+		mDateDisplay = (TextView) findViewById(R.id.showMyDate);
+		mPickDate = (Button) findViewById(R.id.myDatePickerButton);
+
+		mPickDate.setOnClickListener(new View.OnClickListener() {
+			public void onClick(View v) {
+				showDialog(DATE_DIALOG_ID);
+			}
+		});
+
+		// get the current date
+		final Calendar c = Calendar.getInstance();
+		mYear = c.get(Calendar.YEAR);
+		mMonth = c.get(Calendar.MONTH);
+		mDay = c.get(Calendar.DAY_OF_MONTH);
+
+		// display the current date
+		updateDisplay();
+	}
+	private void updateDisplay() {
+		this.mDateDisplay.setText(new StringBuilder()
+				// Month is 0 based so add 1
+				.append(mDay).append("-").append(mMonth + 1).append("-")
+				.append(mYear).append(" "));
+	}
+
+	private DatePickerDialog.OnDateSetListener mDateSetListener = new DatePickerDialog.OnDateSetListener() {
+		@Override
+		public void onDateSet(DatePicker view, int year, int monthOfYear,
+				int dayOfMonth) {
+			mYear = year;
+			mMonth = monthOfYear;
+			mDay = dayOfMonth;
+			updateDisplay();
+		}
+	};
+
+	@Override
+	protected Dialog onCreateDialog(int id) {
+		switch (id) {
+		case DATE_DIALOG_ID:
+			return new DatePickerDialog(this, mDateSetListener, mYear, mMonth,
+					mDay);
+		}
+		return null;
 	}
 
 	private View.OnClickListener createSchedule = new View.OnClickListener() {
@@ -53,15 +106,15 @@ public class ScheduleFormActivity extends Activity {
 			} else if (isAlreadyExist(name.getText().toString())) {
 				error = true;
 				errorField = "Name is alreadyExist";
-			} else if (date.getYear() < cNow.get(Calendar.YEAR)) {
+			} else if (mYear < cNow.get(Calendar.YEAR)) {
 				error = true;
 				errorField = "Time is invalid";
-			} else if (date.getYear() == cNow.get(Calendar.YEAR)) {
-				if (date.getMonth() < cNow.get(Calendar.MONTH)) {
+			} else if (mYear == cNow.get(Calendar.YEAR)) {
+				if (mMonth < cNow.get(Calendar.MONTH)) {
 					error = true;
 					errorField = "Time is invalid";
-				} else if (date.getMonth() == cNow.get(Calendar.MONTH)) {
-					if (date.getDayOfMonth() < cNow.get(Calendar.DAY_OF_MONTH)) {
+				} else if (mMonth == cNow.get(Calendar.MONTH)) {
+					if (mDay < cNow.get(Calendar.DAY_OF_MONTH)) {
 						error = true;
 						errorField = "Time is invalid";
 					}
@@ -84,17 +137,14 @@ public class ScheduleFormActivity extends Activity {
 				Toast.makeText(
 						ScheduleFormActivity.this.getApplicationContext(),
 						errorField, Toast.LENGTH_LONG).show();
-			} else {
-
+			} else {				
 				ScheduleActivity.edited = new Schedule(name.getText()
 						.toString(), type.getSelectedItem().toString(),
-						repeated.getText().toString(), date.getYear(),
-						date.getMonth(), date.getDayOfMonth());
-
+						repeated.getText().toString(), mYear,
+						mMonth, mDay);
 				Intent intent = new Intent(ScheduleFormActivity.this,
 						ListProductInScheduleActivity.class);
 				ScheduleFormActivity.this.startActivity(intent);
-
 			}
 		}
 	};

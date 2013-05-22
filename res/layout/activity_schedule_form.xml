@@ -42,12 +42,28 @@
                 <TextView
                     android:id="@+id/Startschedule"
                     android:text="Delivery Date :" />
+
+                <TextView
+                    android:id="@+id/showMyDate"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content" />
             </TableRow>
 
-            <DatePicker
-                android:id="@+id/datePickerSchedule"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
+            <TableRow>
+
+                <TextView
+                    android:id="@+id/textView1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    />
+
+                <Button
+                    android:id="@+id/myDatePickerButton"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Choose Date" />
+
+            </TableRow>
 
             <TableRow>
 
@@ -66,7 +82,6 @@
 
                     <requestFocus />
                 </EditText>
-                
             </TableRow>
 
             <Button
